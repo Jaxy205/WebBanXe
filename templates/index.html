@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Cho Thuê Xe Đại Lợi - Website demo đặt xe 4, 7 và 16 chỗ, quản lý lịch trình và nhận báo giá.">
+  <meta name="csrf-token" content="{{ csrf_token }}">
+  <title>Cho Thuê Xe Đại Lợi | Đồng hành trên mọi hành trình</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+</head>
+<body>
+<header class="header">
+  <a class="logo" href="#home" aria-label="Đại Lợi Travel, trang chủ">ĐẠI LỢI<span> TRAVEL</span></a>
+  <nav aria-label="Điều hướng chính"><a href="#services">Dịch vụ</a><a href="#cars">Đội xe</a><a href="#process">Quy trình</a><a href="#booking">Đặt xe</a></nav>
+  <a class="nav-cta" href="#booking">Nhận báo giá <span aria-hidden="true">↗</span></a>
+</header>
+<main>
+  <section class="hero" id="home">
+    <div class="hero-copy">
+      <div class="eyebrow light"><span class="little-dot"></span> DỊCH VỤ THUÊ XE ĐẠI LỢI <span class="demo-chip">DEMO</span></div>
+      <h1>Hành trình đẹp<br>bắt đầu từ <em>đây.</em></h1>
+      <p class="lead">Trải nghiệm thuê xe đơn giản với ba lựa chọn cho mọi chuyến đi: 4, 7 và 16 chỗ. Chọn xe, gửi yêu cầu và nhận tư vấn.</p>
+      <div class="hero-actions"><a class="btn gold" href="#booking">Gửi yêu cầu đặt xe <span aria-hidden="true">↗</span></a><a class="btn outline" href="#cars">Khám phá đội xe</a></div>
+      <div class="hero-stats"><div><strong>{{ '%02d'|format(cars|length) }}</strong><small>Dòng xe đang hiển thị</small></div><div><strong>03</strong><small>Bước gửi yêu cầu</small></div><div><strong>Online</strong><small>Đặt xe trên website</small></div></div>
+    </div>
+    <div class="hero-visual"><div class="hero-art">
+      <p class="art-kicker">DÀNH CHO NHỮNG CHUYẾN ĐI ĐÁNG NHỚ</p>
+      <img src="{{ url_for('static', filename='images/fortuner.png') }}" alt="Toyota Fortuner màu bạc - hình minh họa đội xe" width="1206" height="963" fetchpriority="high">
+      <div class="art-footer"><div><span>FEATURED VEHICLE</span><strong>TOYOTA FORTUNER</strong></div><div class="art-number">02 / 03</div></div>
+    </div></div>
+    <span class="hero-vertical">DAI LOI • YOUR JOURNEY, OUR PRIORITY</span>
+  </section>
+
+  <section class="ticker" aria-label="Ưu điểm dịch vụ"><span>TƯ VẤN NHANH</span><b>✳</b><span>CHỌN XE LINH HOẠT</span><b>✳</b><span>ĐẶT XE TRỰC TUYẾN</span><b>✳</b><span>PHÙ HỢP NHIỀU LỊCH TRÌNH</span></section>
+
+  <section class="section services" id="services"><div class="section-top"><div><p class="eyebrow">01 / GIỚI THIỆU DỊCH VỤ</p><h2>Chuyến đi của bạn.<br><span>Sự tận tâm của chúng tôi.</span></h2></div><p class="section-description">Từ di chuyển cá nhân tới nhóm đông người, chọn đúng loại xe và gửi thông tin chuyến đi trong vài thao tác.</p></div>
+    <div class="service-grid">
+      <article class="service-card"><div class="service-number">01</div><div class="service-graphic">✈</div><h3>Đưa đón sân bay</h3><p>Gửi thời gian và địa điểm đón để được tư vấn chuyến đi phù hợp.</p></article>
+      <article class="service-card"><div class="service-number">02</div><div class="service-graphic">◇</div><h3>Du lịch & tham quan</h3><p>Tùy chọn xe theo số hành khách và lịch trình du lịch của bạn.</p></article>
+      <article class="service-card"><div class="service-number">03</div><div class="service-graphic">↗</div><h3>Xe theo yêu cầu</h3><p>Đi một chiều, khứ hồi hoặc tùy chỉnh lịch trình theo nhu cầu.</p></article>
+    </div>
+  </section>
+
+  <section class="section fleet" id="cars"><div class="section-top"><div><p class="eyebrow">02 / ĐỘI XE</p><h2>Lựa chọn cho <em>mọi hành trình.</em></h2></div><p class="section-description">Hình xe do bạn cung cấp. Thông tin mang tính minh họa cho bản demo; giá sẽ được tư vấn riêng.</p></div>
+    <div class="car-grid">
+      {% for car in cars %}
+      <article class="car-card"><div class="car-image"><img src="{{ url_for('static', filename='images/' ~ car.image_file) }}" alt="{{ car.name }} - xe {{ car.seats }} chỗ" loading="lazy"><span class="tag">{{ car.seats }} CHỖ</span></div><div class="car-body"><div class="car-kind">{{ car.kind|upper }} <span class="tiny-line"></span> ĐẠI LỢI</div><h3>{{ car.name }}</h3><p>{{ car.description }}</p><div class="car-footer"><span>Liên hệ để nhận báo giá</span><a class="car-arrow" href="#booking" data-car="{{ car.id }}" aria-label="Đặt {{ car.name }}">↗</a></div></div></article>
+      {% else %}
+      <p>Hiện chưa có xe được hiển thị. Bạn có thể thêm xe trong trang quản trị.</p>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="process" id="process"><div class="process-left"><p class="eyebrow light">03 / CÁCH ĐẶT XE</p><h2>Ba bước.<br><em>Một hành trình.</em></h2><p>Không cần đăng ký tài khoản, không cần thanh toán trước trên website demo.</p></div><div class="process-steps"><div class="process-step"><span>01</span><div><h3>Chọn xe</h3><p>Chọn mẫu xe phù hợp với số người.</p></div></div><div class="process-step"><span>02</span><div><h3>Điền lịch trình</h3><p>Nhập điểm đón, điểm đến, ngày giờ và liên hệ.</p></div></div><div class="process-step"><span>03</span><div><h3>Gửi yêu cầu</h3><p>Đơn được lưu lại để quản lý và liên hệ xác nhận.</p></div></div></div></section>
+
+  <section class="section booking-section" id="booking"><div class="booking-copy"><p class="eyebrow">04 / ĐẶT XE TRỰC TUYẾN</p><h2>Sẵn sàng cho<br><em>chuyến đi tiếp theo?</em></h2><p>Điền form và gửi yêu cầu. Đây là bản demo: hệ thống lưu đơn vào database, không tự xác nhận tình trạng xe hoặc giá thuê.</p><div class="email-notice"><strong>TRẠNG THÁI HỆ THỐNG</strong><p><span class="status-dot"></span> Lưu đơn đặt xe: hoạt động khi database kết nối</p><p><span class="status-dot {{ 'enabled' if email_enabled else 'off' }}"></span> Gửi email: {{ 'đã cấu hình API (cần kiểm tra thực tế)' if email_enabled else 'chưa cấu hình, demo chỉ lưu đơn' }}</p></div></div>
+    <form class="booking-form" id="bookingForm" novalidate><div class="form-title"><div><span>YÊU CẦU BÁO GIÁ</span><h3>Thông tin chuyến đi</h3></div><span class="form-steps">01 / 01</span></div>
+      <div class="form-grid"><label>Họ và tên <b>*</b><input name="customer_name" maxlength="100" required autocomplete="name" placeholder="Nguyễn Văn A"></label><label>Số điện thoại <b>*</b><input name="phone" maxlength="30" type="tel" required autocomplete="tel" placeholder="09xx xxx xxx"></label></div>
+      <div class="form-grid"><label>Email khách hàng <span>(không bắt buộc)</span><input name="email" maxlength="160" type="email" autocomplete="email" placeholder="ban@example.com"></label><label>Số hành khách <b>*</b><input name="passenger_count" id="passengerCount" type="number" min="1" max="50" required value="1"></label></div>
+      <div class="form-grid"><label>Chọn xe <b>*</b><select name="car_id" id="carSelect" required><option value="">-- Chọn dòng xe --</option>{% for car in cars %}<option value="{{ car.id }}" data-seats="{{ car.seats }}">{{ car.name }} · {{ car.seats }} chỗ</option>{% endfor %}</select></label><label>Loại chuyến <b>*</b><select name="trip_type" id="tripType"><option value="one_way">Một chiều</option><option value="round_trip">Khứ hồi</option><option value="custom">Theo lịch trình</option></select></label></div>
+      <div class="form-grid"><label>Ngày đi <b>*</b><input name="travel_date" id="travelDate" type="date" required></label><label>Giờ đón <input name="travel_time" type="time"></label></div>
+      <div id="returnDateRow" hidden><label>Ngày về <b>*</b><input name="return_date" id="returnDate" type="date"></label></div>
+      <label>Điểm đón <b>*</b><input name="pickup" maxlength="250" required placeholder="Địa chỉ đón khách"></label><label>Điểm đến <b>*</b><input name="destination" maxlength="250" required placeholder="Điểm đến dự kiến"></label>
+      <label>Ghi chú <span>(không bắt buộc)</span><textarea name="notes" maxlength="1000" rows="3" placeholder="Hành lý, số điểm dừng, yêu cầu đặc biệt..."></textarea></label>
+      <input class="honeypot" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button id="submitBtn" class="btn gold form-button" type="submit"><span>Gửi yêu cầu đặt xe</span><span aria-hidden="true">↗</span></button>
+      <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+      <p class="form-disclaimer">Thông tin được lưu để trình diễn CRUD. Không nhập dữ liệu nhạy cảm hoặc thông tin cá nhân thật khi chia sẻ demo công khai.</p>
+    </form>
+  </section>
+</main>
+<footer><div><strong>ĐẠI LỢI <span>TRAVEL</span></strong><p>Đồng hành trên mọi hành trình.</p><small>Website demo · Không phải hệ thống xác nhận đặt xe chính thức.</small></div><div class="footer-links"><a href="#home">Về đầu trang ↑</a><a href="{{ url_for('admin_dashboard') }}">Trang quản trị</a></div></footer>
+</body></html>
